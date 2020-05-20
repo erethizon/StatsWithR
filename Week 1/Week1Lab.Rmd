@@ -15,4 +15,111 @@ install.packages("shiny")
 install_github("StatsWithR/statsr")
 ```
 
+Now turn on packages:
+```{r}
+library(dplyr)
+library(ggplot2)
+library(statsr)
+```
+Dataset 1. Dr Arbuthnot's baptism records
+```{r}
+data(arbuthnot)
+```
+Look at the data
+```{r}
+arbuthnot
+```
+View dimensions of the data frame
+```{r}
+dim(arbuthnot)
+```
+Check the names of the variables
+```{r}
+names(arbuthnot)
+```
+Examine the boys data
+```{r}
+arbuthnot$boys
+```
+and the girls...
+```{r}
+arbuthnot$girls
+```
+Now create a simple plot of the number of girls baptized per year
+```{r}
+ggplot(data = arbuthnot, aes(x = year, y = girls))+
+  geom_point()
+```
+Try getting help for ggplot
+```{r}
+?ggplot
+```
+Now determine the total number of births per year by adding boys and girls
+```{r}
+arbuthnot$boys+arbuthnot$girls
+```
+Now use dplyr to add a new variable to the dataframe
+```{r}
+arbuthnot<-arbuthnot %>% mutate(total = boys + girls)
+```
+Now plot total per year:
+```{r}
+ggplot(arbuthnot, aes(year, total))+
+  geom_line()+
+  geom_point()
+```
+Now see if you can plot the proportion of boys born over time
+```{r}
+ggplot(arbuthnot, aes(year, (boys/total)*100))+
+  geom_point()+
+  geom_line()
+```
+Now let's use R to make comparisons
+
+Do boys outnumber girls each year?
+```{r}
+arbuthnot<-arbuthnot %>% 
+  mutate(more_boys = boys > girls)
+```
+Dataset 2. Present birth records
+Load a dataset
+```{r}
+data(present)
+```
+What years are included in the dataset? Use the range() function.
+
+```{r}
+range(present$year)
+```
+Now calculate the total number of births for each year and store in new variable called `total`.  Then calculate the proportion of boys (call it prop_boys).  Then plot to determine if the proportion of boys born in the US has decreased over time.
+
+```{r}
+present <- present %>% 
+  mutate(total = boys + girls,
+         prop_boys = (boys/total)*100)
+
+ggplot(present, aes(year, prop_boys))+
+  geom_line()+
+  geom_point()
+```
+Now see for which years there were more boys than girls
+```{r}
+present<- present %>% 
+  mutate(more_boys = boys > girls)
+```
+Now calculate the boy:girl ratio and store it in a variable called prop_boy_girl and then plot over time.
+
+```{r}
+present <- present %>% 
+  mutate(prop_boy_girl = boys/girls)
+
+ggplot(present, aes(year, prop_boy_girl))+
+  geom_line()+
+  geom_point()
+```
+Now arrange the data in descending order in order to see the year with the highest total births using the `desc()` function:
+```{r}
+desc(present$total)
+```
+
 
