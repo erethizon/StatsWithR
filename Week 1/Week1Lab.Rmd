@@ -1,0 +1,18 @@
+---
+title: "Coursera Stats with R Week 1"
+output: html_notebook
+---
+
+Install course packages
+```{r}
+install.packages("devtools")
+library(devtools)
+```
+Load other packages (it requires dplyr and ggplot2, which are already installed so I'm skipping them here.)
+
+```{r}
+install.packages("shiny")
+install_github("StatsWithR/statsr")
+```
+
+
